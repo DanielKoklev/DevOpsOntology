@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="com.fasterxml.jackson.databind">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/com.fasterxml.jackson.databind.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackson-annotations-2.1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackson-core-2.2.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jade.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/org.semanticweb.HermiT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/owlapi-distribution-3.5.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/owlapi-distribution-3.5.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/owlapi-distribution-3.5.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
