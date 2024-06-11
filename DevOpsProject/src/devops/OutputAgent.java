@@ -84,14 +84,12 @@ public class OutputAgent extends Agent {
 				String toolType = null;
 				String toolUrl = null;
 
-				// Extracting the type from class assertions
 				for (OWLClassExpression classExpression : individual.getTypes(ontology)) {
 					if (!classExpression.isAnonymous()) {
 						toolType = classExpression.asOWLClass().getIRI().getFragment();
 					}
 				}
 
-				// Extracting URL from annotations
 				for (OWLAnnotationAssertionAxiom annotation : ontology.getAnnotationAssertionAxioms(individual.getIRI())) {
 					OWLAnnotationProperty property = annotation.getProperty();
 					if (property.getIRI().getFragment().equalsIgnoreCase("hasURL")) {
