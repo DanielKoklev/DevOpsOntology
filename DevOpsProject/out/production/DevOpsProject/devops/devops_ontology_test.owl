@@ -1,0 +1,281 @@
+<?xml version="1.0"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://example.com/devops_ontology"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     ontologyIRI="http://example.com/devops_ontology">
+
+    <Prefix name="" IRI="http://example.com/devops_ontology#"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+
+    <!-- Classes -->
+    <Declaration>
+        <Class IRI="#DevOpsTool"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#VersionControl"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ContinuousIntegration"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Containerization"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ConfigurationManagement"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Monitoring"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ArtifactRepository"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#CloudProvider"/>
+    </Declaration>
+
+    <!-- SubClass Of -->
+    <SubClassOf>
+        <Class IRI="#VersionControl"/>
+        <Class IRI="#DevOpsTool"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ContinuousIntegration"/>
+        <Class IRI="#DevOpsTool"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Containerization"/>
+        <Class IRI="#DevOpsTool"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ConfigurationManagement"/>
+        <Class IRI="#DevOpsTool"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Monitoring"/>
+        <Class IRI="#DevOpsTool"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ArtifactRepository"/>
+        <Class IRI="#DevOpsTool"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#CloudProvider"/>
+        <Class IRI="#DevOpsTool"/>
+    </SubClassOf>
+
+    <!-- URL Annotation Property -->
+    <Declaration>
+        <AnnotationProperty IRI="#hasURL"/>
+    </Declaration>
+
+    <!-- Instances -->
+    <!-- Version Control Tools -->
+    <Declaration>
+        <NamedIndividual IRI="#Git"/>
+    </Declaration>
+    <ClassAssertion>
+        <Class IRI="#VersionControl"/>
+        <NamedIndividual IRI="#Git"/>
+    </ClassAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#hasURL"/>
+        <IRI>#Git</IRI>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#string">https://git-scm.com/doc</Literal>
+    </AnnotationAssertion>
+
+    <Declaration>
+        <NamedIndividual IRI="#Subversion"/>
+    </Declaration>
+    <ClassAssertion>
+        <Class IRI="#VersionControl"/>
+        <NamedIndividual IRI="#Subversion"/>
+    </ClassAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#hasURL"/>
+        <IRI>#Subversion</IRI>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#string">https://subversion.apache.org/docs</Literal>
+    </AnnotationAssertion>
+
+    <!-- Continuous Integration Tools -->
+    <Declaration>
+        <NamedIndividual IRI="#Jenkins"/>
+    </Declaration>
+    <ClassAssertion>
+        <Class IRI="#ContinuousIntegration"/>
+        <NamedIndividual IRI="#Jenkins"/>
+    </ClassAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#hasURL"/>
+        <IRI>#Jenkins</IRI>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#string">https://www.jenkins.io/doc</Literal>
+    </AnnotationAssertion>
+
+    <Declaration>
+        <NamedIndividual IRI="#TravisCI"/>
+    </Declaration>
+    <ClassAssertion>
+        <Class IRI="#ContinuousIntegration"/>
+        <NamedIndividual IRI="#TravisCI"/>
+    </ClassAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#hasURL"/>
+        <IRI>#TravisCI</IRI>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#string">https://docs.travis-ci.com</Literal>
+    </AnnotationAssertion>
+
+    <!-- Containerization Tools -->
+    <Declaration>
+        <NamedIndividual IRI="#Docker"/>
+    </Declaration>
+    <ClassAssertion>
+        <Class IRI="#Containerization"/>
+        <NamedIndividual IRI="#Docker"/>
+    </ClassAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#hasURL"/>
+        <IRI>#Docker</IRI>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#string">https://docs.docker.com</Literal>
+    </AnnotationAssertion>
+
+    <Declaration>
+        <NamedIndividual IRI="#Kubernetes"/>
+    </Declaration>
+    <ClassAssertion>
+        <Class IRI="#Containerization"/>
+        <NamedIndividual IRI="#Kubernetes"/>
+    </ClassAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#hasURL"/>
+        <IRI>#Kubernetes</IRI>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#string">https://kubernetes.io/docs</Literal>
+    </AnnotationAssertion>
+
+    <!-- Configuration Management Tools -->
+    <Declaration>
+        <NamedIndividual IRI="#Ansible"/>
+    </Declaration>
+    <ClassAssertion>
+        <Class IRI="#ConfigurationManagement"/>
+        <NamedIndividual IRI="#Ansible"/>
+    </ClassAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#hasURL"/>
+        <IRI>#Ansible</IRI>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#string">https://docs.ansible.com</Literal>
+    </AnnotationAssertion>
+
+    <Declaration>
+        <NamedIndividual IRI="#Puppet"/>
+    </Declaration>
+    <ClassAssertion>
+        <Class IRI="#ConfigurationManagement"/>
+        <NamedIndividual IRI="#Puppet"/>
+    </ClassAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#hasURL"/>
+        <IRI>#Puppet</IRI>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#string">https://puppet.com/docs</Literal>
+    </AnnotationAssertion>
+
+    <!-- Monitoring Tools -->
+    <Declaration>
+        <NamedIndividual IRI="#Prometheus"/>
+    </Declaration>
+    <ClassAssertion>
+        <Class IRI="#Monitoring"/>
+        <NamedIndividual IRI="#Prometheus"/>
+    </ClassAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#hasURL"/>
+        <IRI>#Prometheus</IRI>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#string">https://prometheus.io/docs</Literal>
+    </AnnotationAssertion>
+
+    <Declaration>
+        <NamedIndividual IRI="#Nagios"/>
+    </Declaration>
+    <ClassAssertion>
+        <Class IRI="#Monitoring"/>
+        <NamedIndividual IRI="#Nagios"/>
+    </ClassAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#hasURL"/>
+        <IRI>#Nagios</IRI>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#string">https://www.nagios.org/documentation</Literal>
+    </AnnotationAssertion>
+
+    <!-- Artifact Repository Tools -->
+    <Declaration>
+        <NamedIndividual IRI="#Nexus"/>
+    </Declaration>
+    <ClassAssertion>
+        <Class IRI="#ArtifactRepository"/>
+        <NamedIndividual IRI="#Nexus"/>
+    </ClassAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#hasURL"/>
+        <IRI>#Nexus</IRI>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#string">https://help.sonatype.com/repomanager3</Literal>
+    </AnnotationAssertion>
+
+    <Declaration>
+        <NamedIndividual IRI="#Artifactory"/>
+    </Declaration>
+    <ClassAssertion>
+        <Class IRI="#ArtifactRepository"/>
+        <NamedIndividual IRI="#Artifactory"/>
+    </ClassAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#hasURL"/>
+        <IRI>#Artifactory</IRI>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#string">https://www.jfrog.com/confluence/display/JFROG/Artifactory</Literal>
+    </AnnotationAssertion>
+
+    <!-- Cloud Providers -->
+    <Declaration>
+        <NamedIndividual IRI="#AWS"/>
+    </Declaration>
+    <ClassAssertion>
+        <Class IRI="#CloudProvider"/>
+        <NamedIndividual IRI="#AWS"/>
+    </ClassAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#hasURL"/>
+        <IRI>#AWS</IRI>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#string">https://aws.amazon.com/documentation</Literal>
+    </AnnotationAssertion>
+
+    <Declaration>
+        <NamedIndividual IRI="#Azure"/>
+    </Declaration>
+    <ClassAssertion>
+        <Class IRI="#CloudProvider"/>
+        <NamedIndividual IRI="#Azure"/>
+    </ClassAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#hasURL"/>
+        <IRI>#Azure</IRI>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#string">https://docs.microsoft.com/en-us/azure</Literal>
+    </AnnotationAssertion>
+
+    <Declaration>
+        <NamedIndividual IRI="#GoogleCloud"/>
+    </Declaration>
+    <ClassAssertion>
+        <Class IRI="#CloudProvider"/>
+        <NamedIndividual IRI="#GoogleCloud"/>
+    </ClassAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#hasURL"/>
+        <IRI>#GoogleCloud</IRI>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#string">https://cloud.google.com/docs</Literal>
+    </AnnotationAssertion>
+
+</Ontology>

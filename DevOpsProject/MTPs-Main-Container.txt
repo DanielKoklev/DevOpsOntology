@@ -1,1 +1,1 @@
-http://10.1.6.213:7778/acc
+http://ip-192-168-0-197.eu-central-1.compute.internal:7778/acc

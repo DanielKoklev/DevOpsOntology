@@ -1,68 +1,140 @@
 package devops;
 
-import java.util.List;
-
 import jade.core.Agent;
-import jade.domain.DFService;
-import jade.domain.FIPAException;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.ServiceDescription;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import jade.core.behaviours.CyclicBehaviour;
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
 
-public class DevOpsAgent extends Agent{
-	
-	private DevOpsOntology devOpsOntology;
-	private DevOpsAgentGUI gui;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
-	public void addToolToPractice(String practiceName, String toolName) {
-		devOpsOntology.addToolToPractice(practiceName, toolName);
-	}
+public class DevOpsAgent extends Agent {
 
-	public void removeToolFromPractice(String practiceName, String toolName) {
-		devOpsOntology.removeToolFromPractice(practiceName, toolName);
-		
-	}
+	private static class ToolInfo {
+		String type;
+		String url;
 
-	public void changeToolName(String oldName, String newName) {
-		devOpsOntology.renameTool(oldName, newName);
-	}
+		ToolInfo(String type, String url) {
+			this.type = type;
+			this.url = url;
+		}
 
-	public void deleteTool(String name) {
-		devOpsOntology.deleteTool(name);
-	}
-	
-	@Override
-	protected void setup() {
-		try {
-			devOpsOntology = new DevOpsOntology();
-
-			List<Practice> specificPractice = devOpsOntology.getPracticeByTool("Docker");
-
-			gui = new DevOpsAgentGUI(this, specificPractice);
-
-			DFAgentDescription dfd = new DFAgentDescription();
-			ServiceDescription sd = new ServiceDescription();
-
-			dfd.setName(getAID());
-			sd.setType("DevOps Service");
-
-			dfd.addServices(sd);
-
-			try {
-				DFService.register(this, dfd);
-			} catch (FIPAException e) {
-				e.printStackTrace();
-			}
-
-			addBehaviour(new DevOpsServiceBehaviour(devOpsOntology, this));
-
-		} catch (OWLOntologyCreationException e) {
-			System.err.println("Failed to initialize DevOpsOntology.");
-			e.printStackTrace();
-			doDelete();
+		@Override
+		public String toString() {
+			return "Type: " + type + ", URL: " + url;
 		}
 	}
 
-	
+	private Map<String, ToolInfo> tools;
 
+	@Override
+	protected void setup() {
+		System.out.println("Agent " + getLocalName() + " started.");
+
+		tools = new HashMap<>();
+		loadOntology();
+
+		addBehaviour(new CyclicBehaviour(this) {
+			public void action() {
+				MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
+				ACLMessage msg = myAgent.receive(mt);
+				if (msg != null) {
+					String toolName = msg.getContent();
+					String result = queryTool(toolName);
+
+					ACLMessage reply = msg.createReply();
+					reply.setPerformative(ACLMessage.INFORM);
+					reply.setContent(result);
+					myAgent.send(reply);
+				} else {
+					block();
+				}
+			}
+		});
+	}
+
+	private void loadOntology() {
+		try {
+			File file = new File("/Users/dkoklev/uni/DevOpsOntology/DevOpsProject/src/devops/devops_ontology_test.owl");
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(file);
+			doc.getDocumentElement().normalize();
+
+			// Parse NamedIndividuals
+			NodeList declarationNodes = doc.getElementsByTagName("Declaration");
+			for (int i = 0; i < declarationNodes.getLength(); i++) {
+				Element declarationElement = (Element) declarationNodes.item(i);
+				NodeList namedIndividualNodes = declarationElement.getElementsByTagName("NamedIndividual");
+				if (namedIndividualNodes.getLength() > 0) {
+					String toolName = namedIndividualNodes.item(0).getAttributes().getNamedItem("IRI").getTextContent().replace("#", "");
+					tools.put(toolName, new ToolInfo("Unknown", "Unknown"));
+				}
+			}
+
+			NodeList classAssertionNodes = doc.getElementsByTagName("ClassAssertion");
+			for (int i = 0; i < classAssertionNodes.getLength(); i++) {
+				Element classAssertionElement = (Element) classAssertionNodes.item(i);
+				String toolName = null;
+				String toolType = null;
+				NodeList childNodes = classAssertionElement.getChildNodes();
+				for (int j = 0; j < childNodes.getLength(); j++) {
+					Node childNode = childNodes.item(j);
+					if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+						Element childElement = (Element) childNode;
+						if (childElement.getTagName().equals("NamedIndividual")) {
+							toolName = childElement.getAttribute("IRI").replace("#", "");
+						} else if (childElement.getTagName().equals("Class")) {
+							toolType = childElement.getAttribute("IRI").replace("#", "");
+						}
+					}
+				}
+				if (toolName != null && toolType != null) {
+					ToolInfo toolInfo = tools.get(toolName);
+					if (toolInfo != null) {
+						toolInfo.type = toolType;
+					}
+				}
+			}
+
+			NodeList annotationAssertionNodes = doc.getElementsByTagName("AnnotationAssertion");
+			for (int i = 0; i < annotationAssertionNodes.getLength(); i++) {
+				Element annotationAssertionElement = (Element) annotationAssertionNodes.item(i);
+				String toolName = null;
+				String url = null;
+				NodeList childNodes = annotationAssertionElement.getChildNodes();
+				for (int j = 0; j < childNodes.getLength(); j++) {
+					Node childNode = childNodes.item(j);
+					if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+						Element childElement = (Element) childNode;
+						if (childElement.getTagName().equals("IRI")) {
+							toolName = childElement.getTextContent().replace("#", "");
+						} else if (childElement.getTagName().equals("Literal")) {
+							url = childElement.getTextContent();
+						}
+					}
+				}
+				if (toolName != null && url != null) {
+					ToolInfo toolInfo = tools.get(toolName);
+					if (toolInfo != null) {
+						toolInfo.url = url;
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private String queryTool(String toolName) {
+		ToolInfo toolInfo = tools.get(toolName);
+		return (toolInfo != null) ? toolInfo.toString() : "Tool not found";
+	}
 }
